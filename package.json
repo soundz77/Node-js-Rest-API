@@ -1,0 +1,36 @@
+{
+  "name": "express-app",
+  "version": "1.0.0",
+  "description": "A basic modular express app with logging and error handling.",
+  "main": "src/app.js",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon src/app.js",
+    "start": "NODE_ENV=production node src/app.js",
+    "lint": "eslint 'src/**/*.js'"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.6.0",
+    "eslint": "^9.6.0",
+    "globals": "^15.8.0",
+    "nodemon": "^3.1.4"
+  },
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "compression": "^1.7.4",
+    "connect-mongo": "^5.1.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "ejs": "^3.1.10",
+    "envalid": "^8.0.0",
+    "express": "^4.19.2",
+    "express-async-handler": "^1.2.0",
+    "express-rate-limit": "^7.3.1",
+    "express-validator": "^7.1.0",
+    "helmet": "^7.1.0",
+    "mongoose": "^8.4.5",
+    "serve-favicon": "^2.5.0",
+    "validator": "^13.12.0",
+    "winston": "^3.13.0"
+  }
+}
