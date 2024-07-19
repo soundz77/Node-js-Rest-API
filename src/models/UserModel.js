@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import handleAsync from "express-async-handler";
 import baseSchema from "./baseSchema.js";
 import loggingMessages from "../utils/logging/loggingMessages.js";
 import escapeStr from "../utils/sanitisation/strings/escapeStr.js";
@@ -10,6 +9,7 @@ import validateRole from "../utils/validation/functions/userFunctions/role.js";
 import validatePassword from "../utils/validation/functions/userFunctions/password.js";
 import validateAvatar from "../utils/validation/functions/userFunctions/avatar.js";
 import equalValues from "../utils/validation/functions/dataTypeFunctions/equalValues.js";
+import passportLocalMongoose from "passport-local-mongoose";
 
 const messages = loggingMessages.validation;
 
@@ -118,20 +118,20 @@ queryMiddleware.forEach((method) => {
 });
 
 // Pre-save hook for sanitization
-userSchema.pre(
-  "save",
-  handleAsync(async function (next) {
-    // Sanitize and escape fields
-    this.username = escapeStr(this.username);
-    this.email = escapeStr(this.email);
-    this.emailConfirm = escapeStr(this.emailConfirm);
-    this.age = escapeStr(this.age);
-    this.avatar = escapeStr(this.avatar);
-    this.role = escapeStr(this.role);
-
+userSchema.pre("save", async function (next) {
+  try {
+    if (this.isModified("username")) this.username = escapeStr(this.username);
+    if (this.isModified("email")) this.email = escapeStr(this.email);
+    if (this.isModified("emailConfirm"))
+      this.emailConfirm = escapeStr(this.emailConfirm);
+    if (this.isModified("age")) this.age = escapeStr(this.age);
+    if (this.isModified("avatar")) this.avatar = escapeStr(this.avatar);
+    if (this.isModified("role")) this.role = escapeStr(this.role);
     next();
-  })
-);
+  } catch (err) {
+    next(err);
+  }
+});
 
 // Pre-update middleware for version control and field exclusions
 const operations = ["updateMany", "findOneAndUpdate", "findByIdAndUpdate"];
@@ -169,6 +169,22 @@ userSchema.pre(operations, function () {
   } catch (error) {
     console.error("Error in update middleware:", error);
   }
+});
+
+// Plugin passport-local-mongoose to user schema
+userSchema.plugin(passportLocalMongoose, {
+  usernameField: "email", // Specify the field to use as username
+  errorMessages: {
+    MissingPasswordError: "No password was provided",
+    AttemptTooSoonError: "Account is currently locked. Try again later",
+    TooManyAttemptsError:
+      "Account locked due to too many failed login attempts",
+    NoSaltValueStoredError: "Authentication not possible. No salt value stored",
+    IncorrectPasswordError: "Password is incorrect",
+    IncorrectUsernameError: "Username is incorrect",
+    MissingUsernameError: "No email was provided",
+    UserExistsError: "A user with the given email is already registered",
+  },
 });
 
 const User = mongoose.model("User", userSchema);
