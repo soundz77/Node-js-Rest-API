@@ -17,7 +17,7 @@ const __dirname = path.dirname(__filename);
 const configureMiddleware = (app) => {
   app.use(httpLogger);
   app.use(helmet(helmetConfig));
-  app.use(bodyParser.json()); // MISSING !
+  app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use(express.json());
   app.use(RateLimit(rateLimitConfig));
