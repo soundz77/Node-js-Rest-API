@@ -6,19 +6,18 @@ import setupServer from "../base-template/src/server.js";
 import configureAppMiddleware from "./config/configureAppMiddleware.js";
 import configureRoutes from "./config/configureRoutes.js";
 import globalErrorHandler from "../base-template/src/utils/errors/globalErrorHandler.js";
+import configurePassport from "./config/configurePassport.js";
 
 // Main function to setup and start the server
-const main = handleAsync(async () => {
+handleAsync(async () => {
   const app = setupApp(); // Initialize the app
 
   await configureMongoose(); // Await database connection
-  await setupServer(app); // Start the server
-  await configureAppMiddleware(app); // Configure middleware - currently empty!
+  configurePassport(app); // Configure passport and session
+  configureAppMiddleware(app); // Configure middleware
   configureRoutes(app); // Configure routes
+  await setupServer(app); // Start the server
 
   // Error handling middleware should be last
   app.use(globalErrorHandler);
-});
-
-// Execute main function
-main();
+})();
