@@ -2,7 +2,7 @@
 
 A modular Express REST API featuring logging (to file/console) and global error handling. Envalid is used for environment variable validation.
 
-Authentication is implemented with passport.js and passport-local-mongoose. Routes can be protected and require a MongoDB connection so that users can register for access.
+Authentication is implemented with passport.js, passport-local-mongoose and express-session. Routes can be protected and require a MongoDB connection so that users can register for access.
 
 ## Getting Started
 
