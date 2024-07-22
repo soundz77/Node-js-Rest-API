@@ -2,6 +2,8 @@
 
 A modular Express REST API featuring logging (to file/console) and global error handling. Envalid is used for environment variable validation.
 
+Authentication is implemented with passport.js and passportRoutes can be protected and require a MongoDB connection so that users can register for access.
+
 ## Getting Started
 
 1. **Clone the repository**:
@@ -125,3 +127,34 @@ Endpoint: DELETE /api/v1/users?id=MONGOID
 _Delete All / Database_
 
 Endpoint: DELETE /api/v1/users
+
+**User management**
+_Register User_
+POST /api/v1/auth/register
+
+This route uses the create route above together with the User model.
+It expects a json body with the following fields:
+
+{
+"username": "USERNAME",
+"email": "myemail@example.com",
+"emailConfirm": "myemail@example.com",
+"password": "#1acD748",
+"passwordConfirm": "#1acD748"
+}
+
+_Login_
+POST /api/v1/auth/login
+Expects a JSON body containing the user's email and password.
+{
+"email": "myemail@example.com",
+"password": "#1acD748"
+}
+
+_Logout_
+Send a POST request to /api/v1/auth/logout
+
+**Protected routes**
+An example is set up under: /api/v1/auth/protected
+Users that are logged in can access the protected route, all others recieve an error message.
+The routes use req.Authenticated() to check if the user is logged in.
