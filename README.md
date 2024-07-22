@@ -135,6 +135,7 @@ POST /api/v1/auth/register
 This route uses the create route above together with the User model.
 It expects a json body with the following fields:
 
+```
 {
 "username": "USERNAME",
 "email": "myemail@example.com",
@@ -142,14 +143,18 @@ It expects a json body with the following fields:
 "password": "#1acD748",
 "passwordConfirm": "#1acD748"
 }
+```
 
 _Login_
 POST /api/v1/auth/login
 Expects a JSON body containing the user's email and password.
+
+```
 {
 "email": "myemail@example.com",
 "password": "#1acD748"
 }
+```
 
 _Logout_
 Send a POST request to /api/v1/auth/logout
