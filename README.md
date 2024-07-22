@@ -128,8 +128,9 @@ _Delete All / Database_
 
 Endpoint: DELETE /api/v1/users
 
-**User management**
-_Register User_
+## User management
+
+**Register User**
 POST /api/v1/auth/register
 
 This route uses the create route above together with the User model.
@@ -145,7 +146,7 @@ It expects a json body with the following fields:
 }
 ```
 
-_Login_
+**Login**
 POST /api/v1/auth/login
 Expects a JSON body containing the user's email and password.
 
@@ -156,7 +157,7 @@ Expects a JSON body containing the user's email and password.
 }
 ```
 
-_Logout_
+**Logout**
 Send a POST request to /api/v1/auth/logout
 
 **Protected routes**
