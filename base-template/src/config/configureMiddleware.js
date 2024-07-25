@@ -1,6 +1,5 @@
 import express from "express";
 import RateLimit from "express-rate-limit";
-import bodyParser from "body-parser";
 import cors from "cors";
 import helmet from "helmet";
 import compression from "compression";
@@ -17,8 +16,7 @@ const __dirname = path.dirname(__filename);
 const configureMiddleware = (app) => {
   app.use(httpLogger);
   app.use(helmet(helmetConfig));
-  app.use(bodyParser.json());
-  app.use(bodyParser.urlencoded({ extended: true }));
+  app.use(express.urlencoded({ extended: true }));
   app.use(express.json());
   app.use(RateLimit(rateLimitConfig));
   app.use(compression());
