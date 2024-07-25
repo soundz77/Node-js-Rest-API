@@ -55,7 +55,6 @@ const userSchema = new mongoose.Schema(
     },
     avatar: {
       type: String,
-      select: false,
       validate: {
         validator: validateAvatar,
         message: messages.avatarInvalid,
