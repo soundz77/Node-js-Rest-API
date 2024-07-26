@@ -24,12 +24,20 @@ const userSchema = new mongoose.Schema(
       },
       select: true,
     },
-    age: {
-      type: Number,
-      validate: {
-        validator: validateAge,
-        message: messages.ageRules,
-      },
+     facebookId: {
+    type: String,
+    unique: true,
+  },
+  googleId: {
+    type: String,
+    unique: true,
+  },
+  age: {
+    type: Number,
+    validate: {
+      validator: validateAge,
+      message: messages.ageRules,
+    },
       select: true,
     },
     email: {
@@ -59,6 +67,7 @@ const userSchema = new mongoose.Schema(
         validator: validateAvatar,
         message: messages.avatarInvalid,
       },
+       select: true,
     },
     role: {
       type: String,
@@ -67,7 +76,7 @@ const userSchema = new mongoose.Schema(
         validator: validateRole,
         message: messages.roleInvalid,
       },
-      select: false,
+      select: true,
     },
     password: {
       type: String,
