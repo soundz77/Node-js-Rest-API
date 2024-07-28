@@ -1,10 +1,32 @@
-import serverMessages from "../../utils/logging/messages/serverMessages.js";
+import rateLimit from 'express-rate-limit';
+import serverMessages from '../../utils/logging/messages/serverMessages.js';
 
-// Set up rate limiter: maximum of twenty requests per minute
-const rateLimitConfig = Object.freeze({
-  windowMs: 1 * 60 * 1000, // 1 minutes
-  max: 50000, // limits an IP to 20 requests on a window per minute
+// General rate limit: 60 requests per minute
+const generalLimiter = rateLimit({
+  windowMs: 1 * 60 * 1000, // 1 minute
+  max: 60,
   message: serverMessages.errors.rateLimit,
 });
 
-export default rateLimitConfig;
+// Authenticated users rate limit: 300 requests per minute
+const authenticatedLimiter = rateLimit({
+  windowMs: 1 * 60 * 1000, // 1 minute
+  max: 300,
+  message: serverMessages.errors.rateLimit,
+});
+
+// Login rate limit: 5 attempts per minute
+const loginLimiter = rateLimit({
+  windowMs: 1 * 60 * 1000, // 1 minute
+  max: 5,
+  message: 'Too many login attempts, please try again later.',
+});
+
+// Form submissions rate limit: 10 submissions per minute
+const formLimiter = rateLimit({
+  windowMs: 1 * 60 * 1000, // 1 minute
+  max: 10,
+  message: 'Too many form submissions, please try again later.',
+});
+
+export { generalLimiter, authenticatedLimiter, loginLimiter, formLimiter };

@@ -7,8 +7,8 @@ import path from "path";
 import { fileURLToPath } from "url";
 import httpLogger from "../utils/logging/HTTPlogger.js";
 import { strictCors } from "./middleware/corsConfig.js";
-import rateLimitConfig from "./middleware/rateLimitConfig.js";
-import helmetConfig from "./middleware/helmetConfig.js"; // Ensure this is configured properly
+import { generalLimiter } from "./middleware/rateLimitConfig.js";
+import helmetConfig from "./middleware/helmetConfig.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -18,7 +18,7 @@ const configureMiddleware = (app) => {
   app.use(helmet(helmetConfig));
   app.use(express.urlencoded({ extended: true }));
   app.use(express.json());
-  app.use(RateLimit(rateLimitConfig));
+  app.use(RateLimit(generalLimiter));
   app.use(compression());
   app.use(cors(strictCors));
   app.use(express.static("public"));
