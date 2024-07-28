@@ -2,11 +2,11 @@ import rateLimit from 'express-rate-limit';
 import serverMessages from '../../utils/logging/messages/serverMessages.js';
 
 // General rate limit: 60 requests per minute
-const generalLimiter = rateLimit({
+const generalLimiter = {
   windowMs: 1 * 60 * 1000, // 1 minute
   max: 60,
   message: serverMessages.errors.rateLimit,
-});
+};
 
 // Authenticated users rate limit: 300 requests per minute
 const authenticatedLimiter = rateLimit({
