@@ -25,9 +25,8 @@ const updateOne = (Model) => {
       (key) => originalDocument[key] === validatedData[key]
     );
 
-    // MISSING: This returns a 404. Change to 200 (as also sends an "error" message) or 204 - no content
     if (isNoChange) {
-      return requestUtils.resultNotFound(res, "No need to update. ");
+      return requestUtils.resultFound(res, "Nothing to update.");
     }
 
     // Update the document
