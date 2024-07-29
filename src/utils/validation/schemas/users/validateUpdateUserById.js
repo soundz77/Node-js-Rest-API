@@ -3,6 +3,7 @@ import runValidators from "../../../requests/runValidators.js";
 import validateMongoId from "../../functions/validateMongoID.js";
 import validateUsername from "../../functions/userFunctions/username.js";
 import validateEmail from "../../functions/userFunctions/email.js";
+import validateAvatar from "../../functions/userFunctions/avatar.js";
 import trimEscapeOptional from "../../../sanitisation/trimEscapeOptional.js";
 import AppError from "../../../../../base-template/src/utils/errors/AppError.js";
 import loggingMessages from "../../../logging/loggingMessages.js";
@@ -36,6 +37,15 @@ const validateUpdateUserById = checkSchema({
           }
           return runValidators(value, [validateEmail]);
         },
+      },
+    }),
+    optional: { options: { nullable: true, checkFalsy: true } },
+  },
+
+  avatar: {
+    ...trimEscapeOptional({
+      custom: {
+        options: (value) => runValidators(value, [validateAvatar]),
       },
     }),
     optional: { options: { nullable: true, checkFalsy: true } },
