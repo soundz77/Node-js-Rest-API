@@ -33,6 +33,11 @@ const requestUtils = {
       data,
     });
   },
+
+  checkNoDuplicates: (obj) => {
+  const uniqueKeys = new Set(Object.keys(obj));
+  return uniqueKeys.size === obj.length;
+  },
 };
 
 export default requestUtils;
