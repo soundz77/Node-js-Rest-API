@@ -39,6 +39,7 @@ const loggingMessages = {
       updateAvatar: "Avatar must be a JPG, JPEG, or PNG file",
       escaped: "Invalid data sent in a request was sanitised",
       invalidRequest: "Invalid request",
+      duplicateFields: "Duplicate fields sent in request",
     },
     success: {
       created: "Document(s) created successfully",
