@@ -1,17 +1,16 @@
 import asyncHandler from 'express-async-handler';
+import jwt from 'jsonwebtoken';
 import User from '../../models/UserModel.js';
 import passport from 'passport';
 
 const register = asyncHandler(async (req, res) => {
 	const { username, email, emailConfirm, password, passwordConfirm } = req.body;
 
-	// Field validations
 	if (email !== emailConfirm) {
-		return res.status(400).json({ message: 'Emails do not match' });
+		return res.status(400).json({ message: 'Email confirmation does not match' });
 	}
-
 	if (password !== passwordConfirm) {
-		return res.status(400).json({ message: 'Passwords do not match' });
+		return res.status(400).json({ message: 'Password confirmation does not match' });
 	}
 
 	const userData = {
@@ -44,11 +43,34 @@ const register = asyncHandler(async (req, res) => {
 			}
 
 			// Log the user in
-			req.login(user, (error) => {
-				if (error) {
-					return res.status(500).json({ message: 'Login error', error });
+			req.login(user, (err) => {
+				if (err) {
+					return res.status(500).json({ message: 'Login error', error: err });
 				}
-				return res.status(200).json({ message: 'Thanks for registering!', user });
+
+				try {
+					// Generate token
+					const { id, username, avatar, email } = user;
+					const payload = { id, username, avatar, email };
+
+					const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '15m' });
+					const refreshToken = jwt.sign({}, process.env.JWT_REFRESH_SECRET, { expiresIn: '7d' });
+
+					// Set token in the `Authorization` header
+					res.setHeader('Authorization', `Bearer ${token}`);
+
+					// Set refresh token in HTTP-only cookie
+					res.cookie('refreshToken', refreshToken, {
+						httpOnly: true,
+						secure: process.env.NODE_ENV === 'production',
+						sameSite: 'None',
+						maxAge: 7 * 24 * 60 * 60 * 1000,
+					});
+
+					res.status(200).json({ message: 'Registration successful' });
+				} catch (error) {
+					res.status(500).json({ message: 'Token generation error', error });
+				}
 			});
 		})(req, res);
 	});
