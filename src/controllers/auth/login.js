@@ -24,19 +24,14 @@ const login = (req, res, next) => {
         const payload = { id, username, avatar, email };
 
         const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '15m' });
-        const refreshToken = jwt.sign(payload, process.env.JWT_REFRESH_SECRET, { expiresIn: '7d' });
-
-        // Set refresh token in an HTTP-only cookie
-        res.cookie('refreshToken', refreshToken, {
-          httpOnly: true,
-          secure: process.env.NODE_ENV === 'production',
-          sameSite: 'strict',
-          maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
-        });
+        const refreshToken = jwt.sign({}, process.env.JWT_REFRESH_SECRET, { expiresIn: '7d' });
       
         // Set token in the `Authorization` header
         res.setHeader('Authorization', `Bearer ${token}`);
-      
+
+          // Set refresh token in HTTP-only cookie
+        res.cookie('refreshToken', refreshToken, { httpOnly: true, secure: true, sameSite: 'None', maxAge: 7 * 24 * 60 * 60 * 1000 });
+        
         res.status(200).json({ message: 'Login successful' });
       } catch(error) {
         res.status(500).json({ message: 'Token generation error', error });
