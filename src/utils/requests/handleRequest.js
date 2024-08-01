@@ -11,14 +11,18 @@ const handleRequest = handleAsync(async (req, res) => {
   checkVarsSet({ req, res, messages: messages.invalidRequest });
 
   // Ensure req.body is not empty and that req.params and req.query are empty
-  const requestError = requestUtils.checkRequestErrors(req, res, messages.invalidRequest);
+  const requestError = requestUtils.checkRequestErrors(
+    req,
+    res,
+    messages.invalidRequest
+  );
   if (requestError) {
     return res.status(400).json({ message: requestError });
   }
 
   // Check for duplicate keys in the request body
   if (requestUtils.checkNoDuplicates(req.body)) {
-    return res.status(400).json({ message: messages.duplicateFields});
+    return res.status(400).json({ message: messages.duplicateFields });
   }
 
   // Get validation results from the schema applied in the route definition
