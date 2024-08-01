@@ -41,30 +41,32 @@ const updateOne = (Model) => {
       return requestUtils.resultNotFound(res, messages.errors.updated);
     }
 
-      // Generate a new JWT if critical fields are updated
+    // Generate a new JWT if critical fields are updated
     const { username, email, avatar } = updatedDocument;
     const payload = { id, username, avatar, email };
-    const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '15m' });
+    const token = jwt.sign(payload, process.env.JWT_SECRET, {
+      expiresIn: "15m",
+    });
 
     // Optionally, generate a new refresh token if needed
-    const refreshToken = jwt.sign(payload, process.env.JWT_REFRESH_SECRET, { expiresIn: '7d' });
+    const refreshToken = jwt.sign(payload, process.env.JWT_REFRESH_SECRET, {
+      expiresIn: "7d",
+    });
 
     // Set the refresh token in an HTTP-only cookie
-    res.cookie('refreshToken', refreshToken, {
+    res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'None',
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "None",
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
 
-   
     // Successfully updated, return the result
-    return requestUtils.resultFound(
-      res,
-      messages.success.updated,
-      { user: updatedDocument, token }
-    );
-});
+    return requestUtils.resultFound(res, messages.success.updated, {
+      user: updatedDocument,
+      token,
+    });
+  });
 };
 
 export default updateOne;
