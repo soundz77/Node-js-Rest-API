@@ -1,4 +1,4 @@
-import revokeRefreshToken from "./revokeRefreshToken.js";
+import revokeRefreshToken from "./bak-revokeRefreshToken.js";
 
 const revokeRefresh = async (req, res, next) => {
   try {

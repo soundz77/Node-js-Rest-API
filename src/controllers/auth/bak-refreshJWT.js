@@ -1,7 +1,7 @@
 import asyncHandler from "express-async-handler";
 import jwt from "jsonwebtoken";
 import TokenModel from "../../models/TokenModel.js";
-import issueJWT from "./issueJWT.js";
+import issueJWT from "./bak-issueJWT.js";
 import revokeRefreshToken from "./revokeRefreshToken.js";
 
 const refreshJWT = asyncHandler(async (req, res) => {
