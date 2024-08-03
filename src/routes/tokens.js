@@ -5,7 +5,7 @@ import Token from "../models/TokenModel.js";
 import getById from "../controllers/factory/read/getById/getById.js";
 import getAll from "../controllers/factory/read/getAll/getAll.js";
 import revokeRefresh from "../controllers/auth/revokeRefresh.js";
-import refreshJWT from "../controllers/auth/refreshJWT.js";
+// import refreshJWT from "../controllers/auth/refreshJWT.js";
 import updateAll from "../controllers/factory/update/updateAll.js";
 import deleteById from "../controllers/factory/delete/deleteById.js";
 import deleteAll from "../controllers/factory/delete/deleteAll.js";
