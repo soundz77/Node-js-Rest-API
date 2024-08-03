@@ -11,19 +11,14 @@ const revokeRefresh = async (req, res, next) => {
     }
 
     // Call the function to revoke the refresh token
-    const response = await revokeRefreshToken(refreshToken);
+    const { status, message } = await revokeRefreshToken(refreshToken);
 
     // Handle the response from revokeRefreshToken
-    if (response.status === 404) {
-      return res.status(404).json({ error: response.message });
+    if (status !== 200) {
+      return res.status(status).json({ error: "Unable to refresh token" });
     }
 
-    if (response.status !== 200) {
-      return res.status(400).json({ error: response.message });
-    }
-
-    console.log(response.message);
-    res.status(200).json({ message: response.message });
+    res.status(200).json({ message });
     next();
   } catch (error) {
     console.error("Error revoking refresh token:", error);

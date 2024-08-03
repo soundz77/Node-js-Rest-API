@@ -6,23 +6,16 @@ import google from "../config/googleStrategy.js"; // required
 import login from "../controllers/auth/login.js";
 import logout from "../controllers/auth/logout.js";
 import register from "../controllers/auth/register.js";
-import protectedRoute from "../controllers/auth/protectedRoute.js";
 import ensureIsAuthenticated from "../controllers/auth/ensureIsAuthenticated.js";
 import ensureIsNotAuthenticated from "../controllers/auth/ensureIsNotAuthenticated.js";
 import googleRedirect from "../controllers/auth/googleRedirect.js";
 import facebookCallback from "../controllers/auth/facebookCallback.js";
-import refreshJWT from "../controllers/auth/refreshJWT.js";
-import revokeRefresh from "../controllers/auth/revokeRefresh.js";
 
 const authRouter = express.Router();
 
 authRouter.post("/login", ensureIsNotAuthenticated, login);
 authRouter.post("/logout", ensureIsAuthenticated, logout);
 authRouter.post("/register", ensureIsNotAuthenticated, register);
-
-authRouter.get("/protected", ensureIsAuthenticated, protectedRoute);
-authRouter.post("/refreshToken", ensureIsAuthenticated, refreshJWT);
-authRouter.post("/revoketoken", ensureIsAuthenticated, revokeRefresh);
 
 authRouter.get(
   "/auth/facebook",

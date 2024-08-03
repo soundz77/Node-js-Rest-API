@@ -29,7 +29,9 @@ const refreshJWT = asyncHandler(async (req, res) => {
         }
 
         const user = decoded;
-        await issueJWT(res, user);
+        const { authToken, newRefreshToken } = await issueJWT(res, user); // returns an authToken and a refreshToken
+
+        // Set new tokens
 
         // Revoke old refresh token
         await revokeRefreshToken(refreshToken);

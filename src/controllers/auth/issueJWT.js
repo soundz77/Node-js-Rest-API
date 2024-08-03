@@ -27,11 +27,12 @@ const issueJWT = asyncHandler(async (res, user) => {
 
     // Save token to DB
     await refreshTokenDocument.save();
+
+    return { authToken, refreshToken };
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: error });
   }
-  return { authToken, refreshToken };
 });
 
 export default issueJWT;
