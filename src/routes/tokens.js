@@ -25,8 +25,8 @@ tokenRouter.get("/", getAll(Token));
 tokenRouter.patch("/:id", validateRevokeToken, revokeRefresh); // revokeById
 tokenRouter.put("/", updateAll(Token)); // revokeAll
 
-tokenRouter.post("/refreshToken", refreshJWT);
-tokenRouter.post("/revoketoken", revokeRefresh);
+// tokenRouter.post("/refreshToken", refreshJWT);
+// tokenRouter.post("/revoketoken", revokeRefresh);
 
 // Delete
 tokenRouter.delete("/:id", validateMongoId, deleteById(Token));
