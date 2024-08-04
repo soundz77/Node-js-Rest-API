@@ -1,5 +1,5 @@
 import passport from "passport";
-import issueJWT from "./issueJWT.js";
+import issueJWT from "../JWT/issueJWT.js";
 
 // Sends a JWT in HTTP headers as a bearer token
 
