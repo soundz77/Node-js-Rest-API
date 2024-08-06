@@ -15,47 +15,40 @@ const refreshJWT = asyncHandler(async (req, res) => {
   // Validate refresh token
   try {
     // Verify refresh token
-    jwt.verify(
-      refreshToken,
-      process.env.JWT_REFRESH_SECRET,
-      async (err, decoded) => {
-        if (err) {
-          console.log("Invalid refresh token");
-          return { authToken: null, refreshToken: null };
-        }
 
-        // Check token exists and has not been revoked
-        const tokenDoc = await TokenModel.findOne({
-          token: refreshToken,
-          revoked: false,
-        });
-        if (!tokenDoc) {
-          console.log("Refresh token revoked");
-          return { authToken: null, refreshToken: null };
-        }
+    const decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET);
 
-        // Assume refresh Token is valid, so issue new tokens
-        const user = decoded;
-        const { authToken, newRefreshToken } = await issueJWT(res, user);
+    // Check token exists and has not been revoked
+    const tokenDoc = await TokenModel.findOne({
+      token: refreshToken,
+      revoked: false,
+    });
 
-        // If new tokens have been issued, revoke old refresh token
+    if (!tokenDoc) {
+      console.log("Refresh token revoked");
+      return { authToken: null, refreshToken: null };
+    }
 
-        if (!authToken || !newRefreshToken) {
-          console.log("Unable to issue new tokens.");
-          return { authToken: null, refreshToken: null };
-        }
+    // Assume refresh Token is valid, so issue new tokens
+    const user = decoded;
+    const { authToken, newRefreshToken } = await issueJWT(res, user);
 
-        const revoked = await revokeRefreshToken(refreshToken);
+    // If new tokens have been issued, revoke old refresh token
 
-        if (!revoked) {
-          console.log("Unable to revoke refresh token");
-          return { authToken: null, refreshToken: null };
-        }
+    if (!authToken || !newRefreshToken) {
+      console.log("Unable to issue new tokens.");
+      return { authToken: null, refreshToken: null };
+    }
 
-        // Return new (refreshed) tokens
-        return { authToken, refreshToken: newRefreshToken };
-      }
-    );
+    const revoked = await revokeRefreshToken(refreshToken);
+
+    if (!revoked) {
+      console.log("Unable to revoke refresh token");
+      return { authToken: null, refreshToken: null };
+    }
+
+    // Return new (refreshed) tokens
+    return { authToken, refreshToken: newRefreshToken };
   } catch (error) {
     console.error("Error refreshing access token", error);
     return { authToken: null, refreshToken: null };
