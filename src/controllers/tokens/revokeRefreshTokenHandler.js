@@ -3,31 +3,36 @@ import revokeRefreshToken from "../../utils/tokens/revokeRefreshToken.js";
 
 const clientRevokeRefreshToken = handleAsync(async (req, res) => {
   try {
-    const { id } = req.params; // User ID from URL parameter
+    const { userId } = req.params; // User ID from URL parameter
 
-    if (!id) {
-      return res.status(400).json({ error: "User ID is required." });
+    if (!userId) {
+      return res.status(400).json({ error: "Missing userId" });
     }
 
-    const refreshToken = req.cookies?.refreshToken;
-    if (!refreshToken) {
-      return res.status(400).json({ error: "RefreshToken is required." });
+    const success = await revokeRefreshToken(userId);
+
+    if (!success) {
+      return res.status(500).json({ error: "Failed to revoke tokens" });
     }
 
-    const updatedToken = await revokeRefreshToken(id, refreshToken);
+    res.clearCookie("authToken", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "None",
+    });
 
-    if (!updatedToken) {
-      return res.status(404).json({ error: "Token not found" });
-    }
+    res.clearCookie("refreshToken", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "None",
+    });
 
-    return res
-      .status(200)
-      .json({ message: "Token revoked successfully", token: updatedToken });
+    res.status(200).json({ message: "Logged out successfully" });
   } catch (error) {
-    console.error("Error revoking refresh token:", error.message);
+    console.error("Error revoking refresh tokens:", error.message);
     res
       .status(500)
-      .json({ error: "An error occurred while revoking the refresh token" });
+      .json({ error: "An error occurred while revoking refresh tokens" });
   }
 });
 

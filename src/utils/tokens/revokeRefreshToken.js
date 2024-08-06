@@ -1,24 +1,23 @@
 import TokenModel from "../../models/TokenModel.js";
 
-// Attempts to set revoked to true and returns true/false
-const revokeRefreshToken = async (userId, refreshToken) => {
-  if (!userId || !refreshToken) {
-    console.error("Missing userId or refreshToken");
+// Attempts to set revoked to true for all tokens associated with the user
+const revokeRefreshToken = async (userId) => {
+  if (!userId) {
+    console.error("Missing userId");
     return false;
   }
 
   try {
-    // Find the token document by token and userId, and update the revoked field
-    const updatedToken = await TokenModel.findOneAndUpdate(
-      { token: refreshToken, userId: userId }, // Query by token and userId
-      { revoked: true }, // Set revoked to true
-      { new: true } // Return the updated document
+    // Update all tokens associated with the user to revoked
+    const result = await TokenModel.updateMany(
+      { revoked: false, userId: userId }, // Query to match tokens
+      { $set: { revoked: true } } // Set revoked to true
     );
 
-    // Return a boolean indicating whether the token was revoked
-    return updatedToken ? updatedToken.revoked : false;
+    // Return true if at least one token was modified
+    return result.modifiedCount > 0;
   } catch (error) {
-    console.error(`Error revoking refresh token: ${error.message}`);
+    console.error(`Error revoking refresh tokens: ${error.message}`);
     return false;
   }
 };

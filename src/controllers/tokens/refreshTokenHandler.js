@@ -4,7 +4,7 @@ import TokenModel from "../../models/TokenModel.js";
 import issueJWT from "../../utils/tokens/issueJWT.js";
 import revokeRefreshToken from "../../utils/tokens/revokeRefreshToken.js";
 
-const refreshJWT = asyncHandler(async (req, res) => {
+const refreshTokenHandler = asyncHandler(async (req, res) => {
   if (!req.cookies?.refreshToken) {
     console.log("Refresh token not found");
     return { authToken: null, refreshToken: null };
@@ -55,4 +55,4 @@ const refreshJWT = asyncHandler(async (req, res) => {
   }
 });
 
-export default refreshJWT;
+export default refreshTokenHandler;

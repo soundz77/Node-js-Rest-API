@@ -12,7 +12,7 @@ import deleteById from "../controllers/factory/delete/deleteById.js";
 import deleteAll from "../controllers/factory/delete/deleteAll.js";
 
 import validateMongoId from "../utils/validation/schemas/shared/validateMongoID.js";
-import validateRevokeToken from "../utils/validation/schemas/tokens/validateRevokeToken.js";
+// import validateRevokeToken from "../utils/validation/schemas/tokens/validateRevokeToken.js";
 
 const tokenRouter = express.Router();
 
@@ -25,7 +25,7 @@ tokenRouter.get("/:userId", validateMongoId, getTokenByUserId);
 tokenRouter.get("/", getAll(Token));
 
 // Update
-tokenRouter.patch("/:id", validateRevokeToken, revokeRefreshTokenHandler); // revokeById
+tokenRouter.patch("/:userId", revokeRefreshTokenHandler); // revokeById
 tokenRouter.put("/", updateAll(Token)); // revokeAll
 
 tokenRouter.post("/refreshToken", refreshTokenHandler);
