@@ -6,11 +6,11 @@ import TokenModel from "../../models/TokenModel.js";
 // Generates an authToken and a refreshToken. Returns an obj: { authToken, refreshToken }
 
 const issueJWT = asyncHandler(async (res, user) => {
-  const { id, username, avatar, email } = user;
-  const payload = { id, username, avatar, email };
+  const { id, username, avatar } = user;
+  const payload = { id, username, avatar };
 
   // Check if payload has required fields
-  if (!payload.id || !payload.username || !payload.avatar || !payload.email) {
+  if (!payload.id || !payload.username || !payload.avatar) {
     return { authToken: null, refreshToken: null };
   }
 

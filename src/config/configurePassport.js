@@ -12,7 +12,20 @@ const passportConfig = (app) => {
   app.use(passport.session());
 
   passport.use(
-    new LocalStrategy({ usernameField: "email" }, User.authenticate())
+    new LocalStrategy(
+      { usernameField: "username" },
+      async (username, password, done) => {
+        try {
+          console.log(`Authenticating user: ${username}`);
+          const user = await User.authenticate()(username, password);
+          console.log("Authentication successful");
+          return done(null, user.user);
+        } catch (err) {
+          console.error("Authentication error:", err);
+          return done(null, false, { message: "Invalid credentials." });
+        }
+      }
+    )
   );
 
   passport.serializeUser((user, done) => {

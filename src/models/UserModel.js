@@ -24,20 +24,20 @@ const userSchema = new mongoose.Schema(
       },
       select: true,
     },
-     facebookId: {
-    type: String,
-    unique: true,
-  },
-  googleId: {
-    type: String,
-    unique: true,
-  },
-  age: {
-    type: Number,
-    validate: {
-      validator: validateAge,
-      message: messages.ageRules,
+    facebookId: {
+      type: String,
+      unique: true,
     },
+    googleId: {
+      type: String,
+      unique: true,
+    },
+    age: {
+      type: Number,
+      validate: {
+        validator: validateAge,
+        message: messages.ageRules,
+      },
       select: true,
     },
     email: {
@@ -67,7 +67,7 @@ const userSchema = new mongoose.Schema(
         validator: validateAvatar,
         message: messages.avatarInvalid,
       },
-       select: true,
+      select: true,
     },
     role: {
       type: String,
@@ -181,7 +181,7 @@ userSchema.pre(operations, function () {
 
 // Plugin passport-local-mongoose to user schema
 userSchema.plugin(passportLocalMongoose, {
-  usernameField: "email", // Specify the field to use as username
+  usernameField: "username", // Specify the field to use as username
   errorMessages: {
     MissingPasswordError: "No password was provided",
     AttemptTooSoonError: "Account is currently locked. Try again later",
