@@ -5,8 +5,8 @@ import Token from "../models/TokenModel.js";
 import getById from "../controllers/factory/read/getById/getById.js";
 import getTokenByUserId from "../controllers/auth/getTokenByUserId.js";
 import getAll from "../controllers/factory/read/getAll/getAll.js";
-import clientRevokeRefreshToken from "../controllers/JWT/clientRevokeRefreshToken.js";
-import refreshJWT from "../controllers/JWT/refreshJWT.js";
+import revokeRefreshTokenHandler from "../controllers/tokens/revokeRefreshTokenHandler.js";
+import refreshTokenHandler from "../controllers/tokens/refreshTokenHandler.js";
 import updateAll from "../controllers/factory/update/updateAll.js";
 import deleteById from "../controllers/factory/delete/deleteById.js";
 import deleteAll from "../controllers/factory/delete/deleteAll.js";
@@ -25,10 +25,10 @@ tokenRouter.get("/:userId", validateMongoId, getTokenByUserId);
 tokenRouter.get("/", getAll(Token));
 
 // Update
-tokenRouter.patch("/:id", validateRevokeToken, clientRevokeRefreshToken); // revokeById
+tokenRouter.patch("/:id", validateRevokeToken, revokeRefreshTokenHandler); // revokeById
 tokenRouter.put("/", updateAll(Token)); // revokeAll
 
-tokenRouter.post("/refreshToken", refreshJWT);
+tokenRouter.post("/refreshToken", refreshTokenHandler);
 // tokenRouter.post("/revoketoken", revokeRefresh);
 
 // Delete

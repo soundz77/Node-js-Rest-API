@@ -1,11 +1,10 @@
-// tokenService.js
-
+import asyncHandler from "express-async-handler";
 import jwt from "jsonwebtoken";
 import TokenModel from "../../models/TokenModel.js";
-import issueJWT from "./issueJWT.js";
-import revokeRefreshToken from "./revokeRefreshToken.js";
+import issueJWT from "../../utils/JWT/issueJWT.js";
+import revokeRefreshToken from "../../utils/JWT/revokeRefreshToken.js";
 
-const refreshJWT = async (req, res) => {
+const refreshJWT = asyncHandler(async (req, res) => {
   if (!req.cookies?.refreshToken) {
     console.log("Refresh token not found");
     return { authToken: null, refreshToken: null };
@@ -16,6 +15,7 @@ const refreshJWT = async (req, res) => {
   // Validate refresh token
   try {
     // Verify refresh token
+
     const decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET);
 
     // Check token exists and has not been revoked
@@ -23,14 +23,17 @@ const refreshJWT = async (req, res) => {
       token: refreshToken,
       revoked: false,
     });
+
     if (!tokenDoc) {
       console.log("Refresh token revoked");
       return { authToken: null, refreshToken: null };
     }
 
-    // Assume refresh token is valid, so issue new tokens
+    // Assume refresh Token is valid, so issue new tokens
     const user = decoded;
     const { authToken, newRefreshToken } = await issueJWT(res, user);
+
+    // If new tokens have been issued, revoke old refresh token
 
     if (!authToken || !newRefreshToken) {
       console.log("Unable to issue new tokens.");
@@ -50,6 +53,6 @@ const refreshJWT = async (req, res) => {
     console.error("Error refreshing access token", error);
     return { authToken: null, refreshToken: null };
   }
-};
+});
 
-export { extractTokens, refreshJWT };
+export default refreshJWT;

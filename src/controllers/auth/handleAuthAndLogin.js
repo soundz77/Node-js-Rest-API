@@ -1,5 +1,5 @@
 import passport from "passport";
-import issueJWT from "../JWT/issueJWT.js";
+import issueJWT from "../../utils/JWT/issueJWT.js";
 
 const handleAuthAndLogin = (req, res, next) => {
   passport.authenticate("local", (err, user, info) => {
