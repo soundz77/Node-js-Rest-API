@@ -11,6 +11,8 @@ import ensureIsNotAuthenticated from "../controllers/auth/ensureIsNotAuthenticat
 import googleRedirect from "../controllers/auth/googleRedirect.js";
 import facebookCallback from "../controllers/auth/facebookCallback.js";
 
+// Routes are missing validation
+
 const authRouter = express.Router();
 
 authRouter.post("/login", ensureIsNotAuthenticated, login);

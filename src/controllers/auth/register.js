@@ -44,7 +44,6 @@ const register = asyncHandler(async (req, res) => {
         .json({ message: error.message || "Unable to register", error });
     }
 
-    // Use the common function to handle authentication and login
     handleAuthAndLogin(req, res);
   });
 });
