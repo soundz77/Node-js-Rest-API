@@ -10,11 +10,11 @@ const clientRevokeRefreshToken = handleAsync(async (req, res) => {
     }
 
     const refreshToken = req.cookies?.refreshToken;
-    if (refreshToken) {
+    if (!refreshToken) {
       return res.status(400).json({ error: "RefreshToken is required." });
     }
 
-    const updatedToken = revokeRefreshToken(id, refreshToken);
+    const updatedToken = await revokeRefreshToken(id, refreshToken);
 
     if (!updatedToken) {
       return res.status(404).json({ error: "Token not found" });
