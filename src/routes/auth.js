@@ -6,8 +6,8 @@ import google from "../config/googleStrategy.js"; // required
 import login from "../controllers/auth/login.js";
 import logout from "../controllers/auth/logout.js";
 import register from "../controllers/auth/register.js";
-import ensureIsAuthenticated from "../controllers/auth/ensureIsAuthenticated.js";
-import ensureIsNotAuthenticated from "../controllers/auth/ensureIsNotAuthenticated.js";
+import ensureIsAuthenticated from "../utils/auth/ensureIsAuthenticated.js";
+import ensureIsNotAuthenticated from "../utils/auth/ensureIsNotAuthenticated.js";
 import googleRedirect from "../controllers/auth/googleRedirect.js";
 import facebookCallback from "../controllers/auth/facebookCallback.js";
 

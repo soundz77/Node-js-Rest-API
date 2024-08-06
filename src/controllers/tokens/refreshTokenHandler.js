@@ -1,8 +1,8 @@
 import asyncHandler from "express-async-handler";
 import jwt from "jsonwebtoken";
 import TokenModel from "../../models/TokenModel.js";
-import issueJWT from "../../utils/JWT/issueJWT.js";
-import revokeRefreshToken from "../../utils/JWT/revokeRefreshToken.js";
+import issueJWT from "../../utils/tokens/issueJWT.js";
+import revokeRefreshToken from "../../utils/tokens/revokeRefreshToken.js";
 
 const refreshJWT = asyncHandler(async (req, res) => {
   if (!req.cookies?.refreshToken) {

@@ -1,5 +1,5 @@
 import handleAsync from "express-async-handler";
-import revokeRefreshToken from "../../utils/JWT/revokeRefreshToken.js";
+import revokeRefreshToken from "../../utils/tokens/revokeRefreshToken.js";
 
 const clientRevokeRefreshToken = handleAsync(async (req, res) => {
   try {

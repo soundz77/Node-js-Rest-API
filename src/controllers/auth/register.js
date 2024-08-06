@@ -1,6 +1,6 @@
 import asyncHandler from "express-async-handler";
 import User from "../../models/UserModel.js";
-import handleAuthAndLogin from "../auth/handleAuthAndLogin.js";
+import handleAuthAndLogin from "../../utils/auth/handleAuthAndLogin.js";
 
 const register = asyncHandler(async (req, res) => {
   const { username, email, emailConfirm, password, passwordConfirm } = req.body;
